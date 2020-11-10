@@ -16,4 +16,30 @@ class profile_docker (
       environment => 'PATH=/bin:/usr/bin',
     }
   }
+
+  docker::plugin { 'grafana/loki-docker-driver:latest':
+    enabled               => true,
+    grant_all_permissions => true,
+    plugin_alias          => 'loki',
+  }
+
+  group { 'docker':
+    ensure => present,
+  }
+
+  firewallchain { 'DOCKER-USER:filter:IPv4':
+    purge => false,
+  }
+  firewallchain { 'DOCKER:filter:IPv4':
+    purge => false,
+  }
+  firewallchain { 'DOCKER-ISOLATION-STAGE-1:filter:IPv4':
+    purge => false,
+  }
+  firewallchain { 'DOCKER-ISOLATION-STAGE-2:filter:IPv4':
+    purge => false,
+  }
+  firewallchain { 'DOCKER:nat:IPv4':
+    purge => false,
+  }
 }
