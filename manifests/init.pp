@@ -1,11 +1,17 @@
 #
 class profile_docker (
+  Hash    $images                    = {},
+  Hash    $containers                = {},
+  Hash    $networks                  = {},
+  Hash    $volumes                   = {},
   Hash    $registries                = {},
+  String  $version                   = 'latest',
   Boolean $remove_stopped_containers = true,
+  Boolean $manage_firewall_entry     = true,
 ) {
-  class { 'docker': }
-
-  create_resources('docker::registry', $registries)
+  class { 'docker':
+    version => 'latest',
+  }
 
   if $remove_stopped_containers {
     cron { 'remove stopped containers, unused volumes, unused networks and dangling images every hour':
@@ -27,19 +33,12 @@ class profile_docker (
     ensure => present,
   }
 
-  firewallchain { 'DOCKER-USER:filter:IPv4':
-    purge => false,
+  if $manage_firewall_entry {
+    include profile_docker::firewall
   }
-  firewallchain { 'DOCKER:filter:IPv4':
-    purge => false,
-  }
-  firewallchain { 'DOCKER-ISOLATION-STAGE-1:filter:IPv4':
-    purge => false,
-  }
-  firewallchain { 'DOCKER-ISOLATION-STAGE-2:filter:IPv4':
-    purge => false,
-  }
-  firewallchain { 'DOCKER:nat:IPv4':
-    purge => false,
-  }
+  create_resources('docker::images', $images)
+  create_resources('docker::run', $containers)
+  create_resources('docker_network', $networks)
+  create_resources('docker_volume', $volumes)
+  create_resources('docker::registry', $registries)
 }
