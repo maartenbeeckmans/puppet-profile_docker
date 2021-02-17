@@ -9,8 +9,15 @@ class profile_docker (
   Boolean $remove_stopped_containers = true,
   Boolean $manage_firewall_entry     = true,
 ) {
+  if $manage_firewall_entry {
+    $_manage_docker_iptables = false
+  } else {
+    $_manage_docker_iptables = true
+  }
+
   class { 'docker':
-    version => 'latest',
+    version  => 'latest',
+    iptables => $_manage_docker_iptables,
   }
 
   if $remove_stopped_containers {

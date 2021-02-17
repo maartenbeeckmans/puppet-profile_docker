@@ -1,0 +1,10 @@
+---
+profile_docker::images: {}
+profile_docker::containers: {}
+profile_docker::networks: {}
+profile_docker::volumes: {}
+profile_docker::registries: {}
+profile_docker::version: 'latest'
+profile_docker::remove_stopped_containers: true
+profile_docker::manage_firewall_entry: true
+...
