@@ -1,5 +1,6 @@
 #
 class profile_docker (
+  Array   $extra_parameters,
   Hash    $images                    = {},
   Hash    $containers                = {},
   Hash    $networks                  = {},
@@ -16,8 +17,9 @@ class profile_docker (
   }
 
   class { 'docker':
-    version  => 'latest',
-    iptables => $_manage_docker_iptables,
+    version          => $version,
+    extra_parameters => $extra_parameters,
+    iptables         => $_manage_docker_iptables,
   }
 
   if $remove_stopped_containers {

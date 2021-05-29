@@ -1,4 +1,7 @@
 ---
+profile_docker::extra_parameters:
+  - '--insecure-registry nexus.development.beeckmans.cloud:5000'
+  - '--add-registry nexus.development.beeckmans.cloud:5000'
 profile_docker::images: {}
 profile_docker::containers: {}
 profile_docker::networks: {}
