@@ -45,7 +45,7 @@ class profile_docker (
   if $manage_firewall_entry {
     include profile_docker::firewall
   }
-  create_resources('docker::images', $images)
+  create_resources('docker::image', $images)
   create_resources('docker::run', $containers)
   create_resources('docker_network', $networks)
   create_resources('docker_volume', $volumes)
