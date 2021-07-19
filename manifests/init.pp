@@ -1,14 +1,15 @@
 #
 class profile_docker (
   Array   $extra_parameters,
-  Hash    $images                    = {},
-  Hash    $containers                = {},
-  Hash    $networks                  = {},
-  Hash    $volumes                   = {},
-  Hash    $registries                = {},
-  String  $version                   = 'latest',
-  Boolean $remove_stopped_containers = true,
-  Boolean $manage_firewall_entry     = true,
+  Hash    $images,
+  Hash    $containers,
+  Hash    $networks,
+  Hash    $volumes,
+  Hash    $registries,
+  String  $version,
+  Array   $docker_users,
+  Boolean $remove_stopped_containers,
+  Boolean $manage_firewall_entry,
 ) {
   if $manage_firewall_entry {
     $_manage_docker_iptables = false
@@ -20,6 +21,7 @@ class profile_docker (
     version          => $version,
     extra_parameters => $extra_parameters,
     iptables         => $_manage_docker_iptables,
+    docker_users     => $docker_users,
   }
 
   if $remove_stopped_containers {
